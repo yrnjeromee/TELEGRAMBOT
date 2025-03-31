@@ -1,3 +1,7 @@
+// comandi da eseguire con git bash:
+// npm install node-telegram-bot-api
+// npm install node-telegram-bot-api qrcode dotenv
+
 const fs = require('fs');
 const TelegramBot = require('node-telegram-bot-api');
 const QRCode = require("qrcode");
