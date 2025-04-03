@@ -1,6 +1,6 @@
 // comandi da eseguire con git bash:
 // npm install node-telegram-bot-api
-// npm install node-telegram-bot-api qrcode dotenv
+// npm install node-telegram-bot-api qrcode
 
 const fs = require('fs');
 const TelegramBot = require('node-telegram-bot-api');
@@ -42,5 +42,10 @@ bot.on("message", async (msg) => {
     } catch (err) {
         bot.sendMessage(chatId, "❌❌❌ Si è verificato un errore durante la generazione del QR Code! ❌❌❌");
         console.error("Errore durante la generazione del QR Code:", err);
+    }
+
+    if (text === "/help") {
+        bot.sendMessage(chatId, "Non ci sono dei comandi da usare, devi solo mandare un messaggio e ti restituirà un Qr Code!");
+        return;
     }
 });
