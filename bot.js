@@ -4,6 +4,8 @@
 // per avviare scrivere nel terminale: "node --no-deprecation bot.js"
 //
 // fonte Qr Code: "https://www.npmjs.com/package/qrcode"
+// fonte per l'uso di fs.existsSync: "https://nodejs.org/docs/latest/api/fs.html#fsexistssyncpath"
+// fonte per l'uso di fs.unlinkSync: "https://nodejs.org/docs/latest/api/fs.html#fsunlinksyncpath"
 
 const fs = require('fs');
 const TelegramBot = require('node-telegram-bot-api');
@@ -16,8 +18,11 @@ const bot = new TelegramBot(token, { polling: true });
 function generatoreQRCode(qrcode, text) {
     return new Promise((resolve, reject) => {
         QRCode.toFile(qrcode, text, function (err) {
-            if (err) reject(err);
-            resolve();
+            if (err){
+                reject(err);
+            } else {
+                resolve();
+            };
         });
     });
 }
