@@ -1,6 +1,9 @@
 // comandi da eseguire con git bash:
-// npm install node-telegram-bot-api
 // npm install node-telegram-bot-api qrcode
+//
+// per avviare scrivere nel terminale: "node --no-deprecation bot.js"
+//
+// fonte Qr Code: "https://www.npmjs.com/package/qrcode"
 
 const fs = require('fs');
 const TelegramBot = require('node-telegram-bot-api');
@@ -28,6 +31,11 @@ bot.on("message", async (msg) => {
         bot.sendMessage(chatId, "Ciao! Inviami qualsiasi testo e genererò un QR Code per te!");
         return;
     }
+    
+    if (text === "/help") {
+        bot.sendMessage(chatId, "Non ci sono dei comandi da usare, devi solo mandare un messaggio e ti restituirà un Qr Code!");
+        return;
+    }
 
     try {
         await generatoreQRCode(qrcode, text);
@@ -38,14 +46,9 @@ bot.on("message", async (msg) => {
             fs.unlinkSync(qrcode);
         } else {
             throw new Error("Il file QR Code non è stato creato correttamente.");
-        }
+        };
     } catch (err) {
         bot.sendMessage(chatId, "❌❌❌ Si è verificato un errore durante la generazione del QR Code! ❌❌❌");
         console.error("Errore durante la generazione del QR Code:", err);
-    }
-
-    if (text === "/help") {
-        bot.sendMessage(chatId, "Non ci sono dei comandi da usare, devi solo mandare un messaggio e ti restituirà un Qr Code!");
-        return;
-    }
+    };
 });
