@@ -29,38 +29,42 @@ function generatoreQRCode(qrcode, text) {
     });
 }
 
+const replyKeyboard = {
+    reply_markup: {
+      keyboard: [['Genera un Qr Code', '/help']],
+      one_time_keyboard: true,
+      resize_keyboard: true
+    }
+};
+
 bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
     const qrcode = "./qrcode_" + chatId + ".png";
 
     if (text === "/start" || text === "Genera un Qr Code") {
-        const replyKeyboard = {
-            reply_markup: {
-              keyboard: [['Genera un Qr Code', '/help']],
-              one_time_keyboard: true,
-              resize_keyboard: true
-            }
-          };
         bot.sendMessage(chatId, "Ciao! Inviami qualsiasi testo e genererò un QR Code per te!", replyKeyboard);
         return;
     }
     if (text === "/help") {
-        const replyKeyboard = {
-            reply_markup: {
-              keyboard: [['Genera un Qr Code', '/help']],
-              one_time_keyboard: true,
-              resize_keyboard: true
-            }
-          };
-        bot.sendMessage(chatId, "Non ci sono dei comandi da usare, devi solo mandare un messaggio e ti restituirà un Qr Code!", replyKeyboard);
+        bot.sendMessage(chatId, `
+Questo bot ti permette di generare facilmente un QR Code a partire da qualsiasi testo tu invii!
+
+📌 Come funziona:
+1. Avvia il bot con il comando "/start" oppure clicca su **"Genera un Qr Code"** dal menu.
+2. Inviagli un messaggio con il testo che vuoi trasformare in QR Code (può essere un link, una frase, un numero, ecc.).
+3. Il bot genererà il QR Code e te la invierà!
+
+📋 Comandi disponibili:
+- "Genera un Qr Code" – Avvia il bot e mostra il menu.
+- "/help" – Mostra il menu con le opzioni disponibili.`, replyKeyboard);
         return;
     }
     try {
         await generatoreQRCode(qrcode, text);
         if (fs.existsSync(qrcode)) {
             await bot.sendPhoto(chatId, qrcode, {
-                caption: "Ecco il tuo QR Code per: " + text,
+                caption: "Ecco il tuo QR Code per: " + text, ...replyKeyboard
             });
             fs.unlinkSync(qrcode);
         } else {
