@@ -6,6 +6,8 @@
 // fonte Qr Code: "https://www.npmjs.com/package/qrcode"
 // fonte per l'uso di fs.existsSync: "https://nodejs.org/docs/latest/api/fs.html#fsexistssyncpath"
 // fonte per l'uso di fs.unlinkSync: "https://nodejs.org/docs/latest/api/fs.html#fsunlinksyncpath"
+// fonte per l'uso della replyKeyboard: "https://telegrambots.github.io/book/2/reply-markup.html"
+//                                    : "https://core.telegram.org/bots/features#keyboards"
 
 const fs = require('fs');
 const TelegramBot = require('node-telegram-bot-api');
@@ -32,16 +34,28 @@ bot.on("message", async (msg) => {
     const text = msg.text;
     const qrcode = "./qrcode_" + chatId + ".png";
 
-    if (text === "/start") {
-        bot.sendMessage(chatId, "Ciao! Inviami qualsiasi testo e genererò un QR Code per te!");
+    if (text === "/start" || text === "Genera un Qr Code") {
+        const replyKeyboard = {
+            reply_markup: {
+              keyboard: [['Genera un Qr Code', '/help']],
+              one_time_keyboard: true,
+              resize_keyboard: true
+            }
+          };
+        bot.sendMessage(chatId, "Ciao! Inviami qualsiasi testo e genererò un QR Code per te!", replyKeyboard);
         return;
     }
-    
     if (text === "/help") {
-        bot.sendMessage(chatId, "Non ci sono dei comandi da usare, devi solo mandare un messaggio e ti restituirà un Qr Code!");
+        const replyKeyboard = {
+            reply_markup: {
+              keyboard: [['Genera un Qr Code', '/help']],
+              one_time_keyboard: true,
+              resize_keyboard: true
+            }
+          };
+        bot.sendMessage(chatId, "Non ci sono dei comandi da usare, devi solo mandare un messaggio e ti restituirà un Qr Code!", replyKeyboard);
         return;
     }
-
     try {
         await generatoreQRCode(qrcode, text);
         if (fs.existsSync(qrcode)) {
