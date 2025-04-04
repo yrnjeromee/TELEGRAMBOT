@@ -8,6 +8,7 @@
 // fonte per l'uso di fs.unlinkSync: "https://nodejs.org/docs/latest/api/fs.html#fsunlinksyncpath"
 // fonte per l'uso della replyKeyboard: "https://telegrambots.github.io/book/2/reply-markup.html"
 //                                    : "https://core.telegram.org/bots/features#keyboards"
+// fonte per l'usp dell'operatore spread: "https://cipiaceinfo.it/docs/programmazione/javascript/funzioni-2/"
 
 const fs = require('fs');
 const TelegramBot = require('node-telegram-bot-api');
@@ -64,7 +65,7 @@ Questo bot ti permette di generare facilmente un QR Code a partire da qualsiasi 
         await generatoreQRCode(qrcode, text);
         if (fs.existsSync(qrcode)) {
             await bot.sendPhoto(chatId, qrcode, {
-                caption: "Ecco il tuo QR Code per: " + text, ...replyKeyboard
+                caption: "Ecco il tuo QR Code per: " + text, ...replyKeyboard //aggiunto l'operatore spread per non riscrivere l'intero dizionario
             });
             fs.unlinkSync(qrcode);
         } else {
